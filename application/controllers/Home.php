@@ -42,11 +42,12 @@ class Home extends CI_Controller {
 		$userName = $json->username;
 		$userPass = $json->password;
 		$selectedPage = $json->page;
+		$setLimit = $json->limit;
 
 		if ( $userName == 'rali' && $userPass == 'rali123' ) {
 			// $users = $this->users_model->getAllNews();
 			$countUsers = $this->users_model->countUsers();
-			$limit = 10;
+			$limit = $setLimit ? $setLimit : 10;
 			$resultsToReturn = ($selectedPage-1)*$limit;
 			$users =  $this->users_model->paginatetUsers($limit, $resultsToReturn);
 		} else {
@@ -56,7 +57,7 @@ class Home extends CI_Controller {
 		header('Access-Control-Allow-Origin: *');
 		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		header('Content-Type: application/json');
-    echo json_encode( [$countUsers,$users] );
+    echo json_encode( [$countUsers, $users, $setLimit] );
 	}
 
 }
